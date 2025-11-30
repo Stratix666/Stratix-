@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stratix底包</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            flex: 1;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(66, 153, 225, 0.7);
+            background: linear-gradient(90deg, #60a5fa, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.8;
+            color: #cbd5e1;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(2, 8, 20, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #7dd3fc;
+            border-left: 4px solid #38bdf8;
+            padding-left: 15px;
+        }
+        
+        .section-content {
+            line-height: 1.8;
+            color: #e2e8f0;
+        }
+        
+        .links {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .links:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(2, 132, 199, 0.2);
+        }
+        
+        .links a {
+            color: #38bdf8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .links a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+        
+        .update-log {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .update-log:hover {
+            transform: translateY(-3px);
+        }
+        
+        .version {
+            font-size: 22px;
+            font-weight: bold;
+            color: #7dd3fc;
+            margin-bottom: 15px;
+        }
+        
+        .update-log ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .update-log li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .update-log li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #38bdf8;
+            font-size: 18px;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 280px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.6);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        .download-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(25deg);
+            transition: all 0.6s;
+        }
+        
+        .download-btn:hover::after {
+            left: 120%;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .download-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Stratix底包</h1>
+            <p class="subtitle">基于我的世界网易版修改</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">联系方式</h2>
+                <div class="section-content">
+                    <div class="links">
+                        <p>频道：<a href="https://pd.qq.com/s/dkptikj?b=9" target="_blank">https://pd.qq.com/s/dkptikj?b=9</a></p>
+                    </div>
+                    <div class="links">
+                        <p>一群：1058851505</p>
+                        <p>二群：807186999</p>
+                        <p>三群：721408038</p>
+                        <p>四群：979891421</p>
+                        <p>五群：1025301798</p>
+                        <p>六群：713932539</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">更新日志</h2>
+                <div class="section-content">
+                    <div class="update-log">
+                        <div class="version">Stratix New v1.1.0 底包</div>
+                        <ul>
+                            <li>全新UI，更大更舒服（仿iOS圆角曲率，毛玻璃风格，支持自定义悬浮球贴图，控制台头像，控制台背景）</li>
+                            <li>文件清理功能配置修改按钮改用按钮内显示，更舒适好看</li>
+                            <li>全部采用ScrollView包裹，避免显示不完全</li>
+                            <li>自定义提示（删除灵动岛）</li>
+                            <li>100%完整度ccui和res</li>
+                            <li>优化去签</li>
+                            <li>优化间距</li>
+                            <li>其它性能优化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="https://www.123865.com/s/iRMRTd-N1YUh?pwd=xMur#" target="_blank" class="download-btn">前往下载</a>
+    </div>
+</body>
+</html>
